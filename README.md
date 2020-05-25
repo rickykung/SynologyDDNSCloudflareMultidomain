@@ -25,7 +25,7 @@ Installation
 2. Connect via SSH and execute command
 
 ```
-wget https://raw.githubusercontent.com/mrikirill/SynologyDDNSCloudflareMultidomain/master/cloudflare.php -O /usr/syno/bin/ddns/cloudflare.php && sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
+wget https://raw.githubusercontent.com/rickykung/SynologyDDNSCloudflareMultidomain/master/cloudflare.php -O /usr/syno/bin/ddns/cloudflare.php && sudo chmod 755 /usr/syno/bin/ddns/cloudflare.php
 ```
 
 3. Add Cloudflare to the list of DDNS providers DMS file(Location : __/etc.defaults/ddns_provider.conf__)
@@ -39,7 +39,7 @@ wget https://raw.githubusercontent.com/mrikirill/SynologyDDNSCloudflareMultidoma
 5. Than go to DMS settingS __Control Panel -> External Access -> DDNS__ and add new DDNS:
 
 * Select Cloudflare as a service provider
-* Set in __hostname__ field your list of domains divided by __---__ example: __mydoman.com---subdomain.mydomain.com---vpn.mydomain.com__ or simple: __mydomain.com__
+* Set in __hostname__ field your list of domains divided by __---__ example: __(@,subdomain,vpn).mydoman.com---(@,sub1,sub2).anotherdomain.com---www.domain3.com__ or simple: __mydomain.com__
 * Set your Cloudflare acoount email into __Username/Email__ field
 * Set Cloudflare Global API Key into __Password/Key__ field (See: [https://dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens))
 
