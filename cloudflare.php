@@ -12,7 +12,7 @@ $cf->makeUpdateDNS();
 /**
  * DDNS auto updater for Synology NAS
  * Base on Cloudflare API v4
- * Supports multidomains and sundomains 
+ * Supports multidomains and sundomains
  */
 class updateCFDDNS
 {
@@ -32,12 +32,29 @@ class updateCFDDNS
 
         $this->validateIpV4($this->ip);
 
-        $arHost = explode('---', $hostname);
+        $domains = explode('---', $hostname);
+        foreach ($domains as $value) {
+          if (strpos($value, '(') === false) {
+            $arHost[] = $value;
+            continue;
+          }
+          $domain = preg_replace('/\(.*\)(.*?)/i', '$1', $value);
+          $sub = preg_replace('/\((.*?)\).*/i', '$1', $value);
+          $sub = explode(',', $sub);
+          foreach ($sub as $name) {
+            if ($name === '@') {
+              $arHost[] = substr($domain, 1);
+            } else {
+              $arHost[] = $name . $domain;
+            }
+          }
+        }
+
         if (empty($arHost)) {
             $this->badParam('empty host list');
         }
 
-        foreach ($arHost as $value) {          
+        foreach ($arHost as $value) {
             $this->hostList[$value] = [
                 'hostname' => '',
                 'fullname' => $value,
@@ -52,9 +69,9 @@ class updateCFDDNS
             $this->setRecord($arHost['fullname'], $arHost['zoneId']);
         }
     }
-    
+
     /**
-     * Update CF DNS records 
+     * Update CF DNS records
      */
     function makeUpdateDNS()
     {
@@ -93,7 +110,7 @@ class updateCFDDNS
         }
         return true;
     }
- 
+
     /**
      * Set ZoneID for each hosts
      */
@@ -176,7 +193,7 @@ class updateCFDDNS
         switch($method) {
             case "GET":
                 $options[CURLOPT_HTTPGET] = true;
-            break;    
+            break;
 
             case "POST":
                 $options[CURLOPT_POST] = true;
